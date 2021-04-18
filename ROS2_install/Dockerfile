@@ -28,7 +28,7 @@ ENV LANG en_US.utf8
 # 一般ユーザーアカウントを追加
 RUN useradd -s ${SHELL} -m ${USER}
 RUN gpasswd -a ${USER} sudo
-RUN echo "${USER}:p1zzateam@CR" | chpasswd
+RUN echo "${USER}:hoge" | chpasswd
 
 # completion
 RUN apt-get update && apt-get install -y curl

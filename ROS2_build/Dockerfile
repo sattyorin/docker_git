@@ -20,7 +20,7 @@ ENV ROS_DISTRO eloquent
 # 一般ユーザーアカウントを追加
 RUN useradd -s ${SHELL} -m ${USER}
 RUN gpasswd -a ${USER} sudo
-RUN echo "${USER}:p1zzateam@CR" | chpasswd
+RUN echo "${USER}:hoge" | chpasswd
 
 RUN apt-get update
 RUN apt-get install -y sudo
