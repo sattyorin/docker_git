@@ -26,7 +26,7 @@ RUN echo "export MUJOCO_PY_MJKEY_PATH=~/.mujoco/mjkey.txt" >> ${HOME}/.bashrc
 RUN echo "export MUJOCO_PY_MJPRO_PATH=~/.mujoco/mjpro150" >> ${HOME}/.bashrc
 RUN echo "export LD_LIBRARY_PATH=~/.mujoco/mjpro150/bin" >> ${HOME}/.bashrc
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.0/targets/x86_64-linux/lib" >> ${HOME}/.bashrc
-RUN alias MJPL='LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLEW.so:/usr/lib/x86_64-linux-gnu/libGL.so' >> ${HOME}/.bashrc
+RUN echo "alias MJPL='LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGLEW.so:/usr/lib/x86_64-linux-gnu/libGL.so'" >> ${HOME}/.bashrc
 RUN . ${HOME}/.bashrc
 
 USER ${USER}
@@ -47,15 +47,21 @@ RUN python -m pip install imageio==2.9.0
 # RUN python -m pip install pycparser==2.21
 RUN python -m pip install -U mujoco-py==1.50.1
 
-WORKDIR /home/${USER}/
-
-RUN git clone https://github.com/google-research/pddm.git
-RUN python -m pip install -e ${HOME}/pddm/.
-
 ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
-# sudo docker run --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --gpus all --privileged --runtime=nvidia -it pddm:1.0 bash
+WORKDIR /home/${USER}/
 
-# /pddm/pddm/utils/helper_funcs.py
+# RUN git clone https://github.com/google-research/pddm.git
+# RUN python -m pip install -e ${HOME}/pddm/.
+
+# sudo docker run --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" -v=/home/sattyorin/pddm_docker:/home/sattyorin/pddm --gpus all --privileged --runtime=nvidia -it pddm:1.0 bash
+
+# pddm/pddm/utils/helper_funcs.py
 # rc('font', **{'family': 'serif', 'serif': ['Palatino']}) #comment out
+
+# pddm/pddm/script/train.py
+# # with tf.Session(config=get_gpu_config(args.use_gpu, args.gpu_frac)) as sess:
+# configuration = get_gpu_config(args.use_gpu, args.gpu_frac)
+# configuration.gpu_options.allow_growth = True
+# with tf.Session(config=configuration) as sess:
